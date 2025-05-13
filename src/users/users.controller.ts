@@ -1,8 +1,23 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+
+interface User {
+  id?: string;
+  name?: string;
+  email?: string;
+  role?: 'RESEARCH' | 'IT' | 'ADMIN';
+}
 
 @Controller('users')
 export class UsersController {
-/*
+  /*
     GET /users
     GET /users/:id
     POST /users
@@ -10,33 +25,27 @@ export class UsersController {
     DELETE /users/:id
     */
   @Get() // GET /users or /users?role=value
-  findAll(@Query('role') role?: 'RESEARCH'  | 'IT' | 'ADMIN' ) 
-  {
-    return []
+  findAll() {
+    return [];
   }
- 
 
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return { id };
+  }
 
-
-@Get(':id')
-findOne(@Param('id') id: string) {
-    return{id}
-}
-
-
- @Post()
- create(@Body() user: {}){
+  @Post()
+  create(@Body() user: User) {
     return user;
- }
+  }
 
- @Patch(':id')  //patch /user/:id
-update(@Param('id') id: string, @Body() userUpdate: {}) {
-    return{id, ...userUpdate}
-}
+  @Patch(':id') //patch /user/:id
+  update(@Param('id') id: string, @Body() userUpdate: Partial<User>) {
+    return { id, ...userUpdate };
+  }
 
-@Delete(':id')
-delete(@Param('id') id: string) {
-    return{id}
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return { id };
+  }
 }
-}
- 
